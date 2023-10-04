@@ -1,14 +1,8 @@
 import React from "react";
 import ReactDOMClient from "react-dom/client";
+import MyApp from "./MyApp";
 import "./index.css";
 
-function MyApp() {
-  return (
-    <div>
-      <h1>Hello, React!</h1>
-    </div>
-  );
-}
 
 // Create the container
 const container = document.getElementById("root");

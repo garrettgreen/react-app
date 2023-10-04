@@ -28,5 +28,7 @@ function MyApp() {
   ) 
 }
 
+export default MyApp;
+
 
 
