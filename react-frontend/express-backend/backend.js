@@ -38,14 +38,37 @@ const users = {
 
 app.use(express.json());
 
-app.get('/users/:id', (req, res) => {
-    const id = req.params['id']; //or req.params.id
-    let result = findUserById(id);
-    if (result === undefined || result.length == 0)
+// to get users by name and job
+app.get('/users', (req, res) => {
+    const { name, job } = req.query;
+
+    // Filter users list
+    const filteredUsers = users['users_list'].filter((user) => {
+        return (!name || user['name'] === name) && (!job || user['job'] === job);
+    });
+
+    if (filteredUsers.length === 0) {
+        // No users found, return a 404 
+        res.status(404).send('No matching users found.');
+    } else {
+        // Respond with the filtered users
+        res.send({ users_list: filteredUsers });
+    }
+});
+
+app.delete('/users/:id', (req, res) => {
+    const id = req.params['id'];
+
+    // Find the index of user
+    const index = users['users_list'].findIndex((user) => user['id'] === id);
+
+    if (index === -1) {
+        // return a 404 status if user not found
         res.status(404).send('Resource not found.');
-    else {
-        result = {users_list: result};
-        res.send(result);
+    } else {
+        // Remove user from the array 
+        users['users_list'].splice(index, 1);
+        res.status(204).end(); // Respond with a 204 status (No Content) for successful deletion
     }
 });
 
