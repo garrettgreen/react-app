@@ -91,7 +91,8 @@ app.post('/users', (req, res) => {
     const randomId = generateRandomId();
     userToAdd.id = randomId;
     addUser(userToAdd);
-    res.status(201).end();
+    
+    res.status(201).send(userToAdd); // Return updated representation of the user object in response (task 3)
 });
 
 function addUser(user){

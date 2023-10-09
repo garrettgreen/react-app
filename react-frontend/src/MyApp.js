@@ -13,8 +13,8 @@ function MyApp() {
         const response = await axios.post('http://localhost:8000/users', person);
   
         if (response.status === 201) {
-          // Check for a 201 status code and update the state
-          setCharacters([...characters, person]);
+          const newUserWithId = response.data; // Get updated representation from response (task 3)
+          setCharacters([...characters, newUserWithId]); // Update the state
         }
   
         return response;
@@ -43,12 +43,27 @@ function MyApp() {
       }
    }
 
-    function removeOneCharacter (index) {
-	    const updated = characters.filter((character, i) => {
-	        return i !== index
-	    });
-	  setCharacters(updated);
-	}
+   function removeOneCharacter(index) {
+      const userToDelete = characters[index];
+      // axios delte request to backend
+      axios
+        .delete(`http://localhost:8000/users/${userToDelete.id}`)
+        .then((response) => {
+          if (response.status === 204) {
+            // User deleted successfully in backend, update frontend (task 4)
+            const updatedCharacters = [...characters];
+            updatedCharacters.splice(index, 1);
+            setCharacters(updatedCharacters);
+          } else if (response.status === 404) {
+            // User not found in the backend, handle as needed (show an error message, etc.)
+            console.log('User not found in the backend.');
+          }
+        })
+        .catch((error) => {
+          // Handle network or other errors here
+          console.log(error);
+        });
+    }
 
     function updateList (person) { 
       makePostCall(person).then( result => {
