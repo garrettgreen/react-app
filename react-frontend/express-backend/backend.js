@@ -39,6 +39,19 @@ const users = {
 app.use(cors());
 app.use(express.json());
 
+function generateRandomId() {
+    const length = 6; // arbitrary len
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomId = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+  
+    return randomId;
+  }
+
 // to get users by name and job
 app.get('/users', (req, res) => {
     const { name, job } = req.query;
@@ -75,6 +88,8 @@ app.delete('/users/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
+    const randomId = generateRandomId();
+    userToAdd.id = randomId;
     addUser(userToAdd);
     res.status(201).end();
 });
