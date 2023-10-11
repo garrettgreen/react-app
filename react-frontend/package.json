@@ -4,7 +4,10 @@
   "description": "class",
   "main": "index.js",
   "scripts": {
-    "test": "goal"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "author": "",
   "license": "ISC",
